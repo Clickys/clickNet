@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/materialize.min.css">
+</head>
+
+<body class="teal lighten-2">
+    <div class="container">
+        <div class="row">
+            <ul id="dropdown1" class="dropdown-content">
+                <li><a href="#!">one</a></li>
+                <li><a href="#!">two</a></li>
+                <li class="divider"></li>
+                <li><a href="#!">three</a></li>
+            </ul>
+            <nav>
+                <div class="nav-wrapper">
+                    <a href="#!" class="brand-logo right">Click Net!</a>
+                    <ul class="left hide-on-med-and-down">
+                        <li><a href="sass.html">Sass</a></li>
+                        <li><a href="badges.html">Components</a></li>
+                        <!-- Dropdown Trigger -->
+                        <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="row">
+            <div class="col s2"> <i class="medium material-icons menuBar modal-trigger" data-target="computerAddModal" id="menuBarAdd">add</i></div>
+            <div class="col s2"> <i class="medium material-icons menuBar">access_time</i></div>
+            <div class="col s2"> <i class="medium material-icons menuBar">account_box</i></div>
+            <div class="col s2"> <i class="medium material-icons menuBar">find_in_page</i></div>
+            <div class="col s2"> <i class="medium material-icons menuBar">add</i></div>
+            <div class="col s2"> <i class="medium material-icons menuBar">add</i></div>
+        </div>
+        <div class="row">
+            <!-- Modal Structure -->
+            <div id="computerAddModal" class="modal">
+                <div class="modal-header right-align">
+                    <a href="#!" class="  modal-action modal-close waves-effect waves-green btn-flat"><i class="material-icons">close</i></a>
+                </div>
+                <div class="modal-content center-align">
+                    <h4>Add Computer To The Grid</h4>
+                    <i class="large material-icons" id="addComputerModal" onClick="handlers.addComputer()">desktop_windows</i>
+                </div>
+            </div>
+
+            <div class="col s2" id="pcGrid"></div>
+        </div>
+    </div>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+</body>
+
+</html>

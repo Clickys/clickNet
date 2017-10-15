@@ -1,0 +1,30 @@
+#pcGrid {
+    height: 250vh;
+    width: 100%;
+    background-color: #EE6E73;
+
+}
+
+.material-icons.menuBar {
+    color: #263238  ;
+}
+.material-icons.menuBar:hover {
+    cursor: pointer;
+}
+
+#addComputerModal:hover {
+    cursor: pointer;
+}
+
+.addComputerGrid {
+    cursor: pointer;
+}
+.createComputerDiv {
+    position: relative;
+}
+.closeComputerGrid {
+    position: absolute;
+    top: 5%;
+    left: 1%;
+    cursor: pointer;
+}
