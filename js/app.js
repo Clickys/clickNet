@@ -15,23 +15,26 @@ $(document).ready(function() {
 const computerAdd = {
     //List of computers in the net
     computerList: [],
-
-    computerID: 0,
-    //Add computer object to grid
+    //Add computer object to computerList
     addComputer() {
         this.computerList.push({
-            computerNumber: this.computerID,
+            computerNumber: this.computerList.length,
             available: true,
         });
         console.log(this.computerList);
-        console.log(this.computerID);
     },
-    //Remove computer from grid
+    //Remove computer from computerList array
     removeComputer(pos) {
         this.computerList.splice(pos, 1);
-        this.computerID -= 1;
         console.log(this.computerList);
-        console.log(this.computerID);
+
+    },
+
+    autoIdToElements() {
+        let createComputerDiv = Array.from(document.getElementsByClassName('createComputerDiv'));
+        createComputerDiv.forEach((element, position) => {
+            element.id = position;
+        })
     }
 }
 
@@ -40,7 +43,6 @@ const handlers = {
     addComputer() {
         let addComputerModal = document.getElementById('addComputerModal');
         computerAddToDom.addComputer();
-        computerAdd.addComputer();
     },
 
     removeComputer() {
@@ -50,6 +52,7 @@ const handlers = {
 
 const computerAddToDom = {
     addComputer() {
+        computerAdd.addComputer();
         let pcGrid = document.getElementById('pcGrid');
 
         let createComputerDiv = document.createElement('div');
@@ -61,8 +64,11 @@ const computerAddToDom = {
         let createCloseIconText = document.createTextNode('close');
         let isAvailableIconText = document.createTextNode('brightness_1');
 
-        createComputerDiv.id = computerAdd.computerID;
-        computerAdd.computerID += 1;
+        computerAdd.computerList.forEach((element, pos) => {
+            createComputerDiv.id = pos;
+        })
+
+
 
         createComputerDiv.className += ' col s4 m2 l2 createComputerDiv';
         createComputerIcon.className += ' large material-icons addComputerGrid';
@@ -76,15 +82,18 @@ const computerAddToDom = {
         createComputerDiv.appendChild(createCloseIcon);
         createComputerDiv.appendChild(createisAvailableIcon);
         pcGrid.appendChild(createComputerDiv);
+
     },
 
     computerGridEventListeners() {
-        document.addEventListener('click', function(e) {
+        const pcGrid = document.getElementById('pcGrid');
+        pcGrid.addEventListener('click', function(e) {
             if (e.target.closest('.closeComputerGrid')) {
-                let pcGridParent = e.target.parentNode;
+                computerAdd.autoIdToElements();
+                let createComputerDiv = e.target.parentNode;
                 let pcGrid = document.getElementById('pcGrid');
-                computerAdd.removeComputer(pcGridParent.id);
-                pcGrid.removeChild(pcGridParent);
+                computerAdd.removeComputer(createComputerDiv.id);
+                pcGrid.removeChild(createComputerDiv);
             }
         }, false);
     }
