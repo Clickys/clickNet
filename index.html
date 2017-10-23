@@ -36,7 +36,7 @@
         </div>
         <div class="row">
             <div class="col s2"> <i class="medium material-icons menuBar modal-trigger" data-target="computerAddModal" id="menuBarAdd">add</i></div>
-            <div class="col s2"> <i class="medium material-icons menuBar">access_time</i></div>
+            <div class="col s2"> <i class="medium material-icons menuBar modal-trigger" data-target="addTimeModal">access_time</i></div>
             <div class="col s2"> <i class="medium material-icons menuBar modal-trigger" data-target="userAddModal">account_box</i></div>
             <div class="col s2"> <i class="medium material-icons menuBar">find_in_page</i></div>
             <div class="col s2"> <i class="medium material-icons menuBar">add</i></div>
@@ -51,6 +51,15 @@
                 <div class="modal-content center-align">
                     <h4>Add Computer To The Grid</h4>
                     <i class="large material-icons" id="addComputerModal" onClick="handlers.addComputer()">desktop_windows</i>
+                </div>
+            </div>
+            <div id="addTimeModal" class="modal">
+                <div class="modal-header right-align">
+                    <a href="#!" class="  modal-action modal-close waves-effect waves-green btn-flat"><i class="material-icons">close</i></a>
+                </div>
+                <div class="modal-content center-align">
+                    <h4>Add Time To Username</h4>
+                    <i class="large material-icons" id="addTimeModal1" onClick="handlers.addComputer()">desktop_windows</i>
                 </div>
             </div>
             <div id="userAddModal" class="modal">
@@ -74,7 +83,7 @@
                             <div class="row">
                                 <div class="input-field col s6">
                                     <input id="username" type="text" class="validate">
-                                    <label for="username">Last Name</label>
+                                    <label for="username">Username</label>
                                 </div>
                                 <div class="input-field col s6">
                                     <input id="password" type="password" class="validate">
@@ -95,7 +104,7 @@
                                   </select>
                                   <label>Deposit Amount</label>
                                 </div>
-                                <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick="userAccountsFromDom.addUserAccount();">add</i></a>
+                                <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick="userHandlers.addUserAccount();">add</i></a>
                             </div>
                         </form>
                     </div>

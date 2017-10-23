@@ -24,12 +24,10 @@ const computerAddToGrid = {
             usernameInUse: null,
             time: 0,
         });
-        console.log(this.computerList);
     },
     //Remove computer from computerList array
     removeComputer(pos) {
         this.computerList.splice(pos, 1);
-        console.log(this.computerList);
 
     },
     //Get the nodelist and loop through them and changing the IDs depends on how many left on the computerList Array
@@ -123,14 +121,22 @@ const userAccounts = {
 
     userAccountList: [],
 
-    addUserAccount(name, surname, username,password, email, amountOfDeposit) {
+    addUserAccount(name, surname, username, password, email, amountOfDeposit) {
         if (!(name && surname && username && password && email && amountOfDeposit)) {
             return;
         } else {
             this.userAccountList.push(new User(name, surname, username, password, email, amountOfDeposit));
         }
-        console.log(this.userAccountList);
     },
+}
+
+const userHandlers = {
+
+    addUserAccount() {
+        userAccountsFromDom.addUserAccount();
+        userAccountsFromDom.clearUserForm();
+
+    }
 }
 
 const userAccountsFromDom = {
@@ -144,10 +150,50 @@ const userAccountsFromDom = {
         let depositAmount = document.getElementById('depositAmount');
         let amountPicked = parseInt(depositAmount.options[depositAmount.selectedIndex].value);
 
-        userAccounts.addUserAccount(name, surname,username, password, email, amountPicked);
+        userAccounts.addUserAccount(name, surname, username, password, email, amountPicked);
+    },
+
+    clearUserForm() {
+        let username = document.getElementById('username');
+        let name = document.getElementById('first_name');
+        let surname = document.getElementById('last_name');
+        let password = document.getElementById('password');
+        let email = document.getElementById('email');
+
+        username.value = '';
+        name.value = '';
+        surname.value = '';
+        password.value = '';
+        email.value = '';
+
     }
 }
+
+// Timer Add Time to Users
+const addTime = {
+    listUsernames: [],
+
+    getAllUsernames() {
+        userAccounts.userAccountList.forEach(username => this.listUsernames.push(username));
+    }
+}
+
+const listUsersToDom = {
+    listUsers() {
+        let addTimeModal = document.getElementById('addTimeModal');
+
+        addTime.listUsernames.forEach((user) => {
+            console.log(user.name);
+        })
+    }
+}
+
+userAccounts.addUserAccount('andreas1', 'evagorou2', 'clickys3', 105, 'dsadasasds', 3);
 userAccounts.addUserAccount('andreas', 'evagorou', 'clickys', 10, 'dsadas', 3);
+addTime.getAllUsernames();
+listUsersToDom.listUsers();
+console.log(addTime.listUsernames);
+
 //AddEventListeners
 
 computerAddToGridToDom.computerGridEventListeners();
