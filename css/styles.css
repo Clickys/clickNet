@@ -35,3 +35,16 @@
 #pcGrid > div> i.tiny.material-icons.isAvailableGrid {
     color: green;
 }
+#addTimeModalMain > ul {
+    padding: 10px;
+}
+#addTimeModalMain > ul > li {
+    padding: 10px;
+    margin-top: 2px;
+    font-size: 20px;
+    color: red;
+    border: 1px solid black;
+}
+.addTimeButtonModal {
+    margin-left: 20%;    
+}

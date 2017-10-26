@@ -1,3 +1,7 @@
+/* global document */
+/*eslint-env jquery*/
+/*eslint max-len: ["error", 180]*/
+
 //Create Object Computer Add
 // Create an array to store computer objects
 // Create methods of adding removing computers from array
@@ -6,7 +10,7 @@
 //
 
 //MODALS
-$(document).ready(function() {
+$(document).ready(() => {
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
     $('.modal').modal();
     $('select').material_select();
@@ -19,7 +23,7 @@ const computerAddToGrid = {
     //Add computer object to computerList
     addComputer() {
         this.computerList.push({
-            computerNumber: this.computerList.length,
+            computerNumber: null,
             isAvailable: true,
             usernameInUse: null,
             time: 0,
@@ -28,51 +32,60 @@ const computerAddToGrid = {
     //Remove computer from computerList array
     removeComputer(pos) {
         this.computerList.splice(pos, 1);
-
     },
     //Get the nodelist and loop through them and changing the IDs depends on how many left on the computerList Array
     autoIdToElements() {
-        let createComputerDiv = Array.from(document.getElementsByClassName('createComputerDiv'));
+        const createComputerDiv = Array.from(document.getElementsByClassName('createComputerDiv'));
         createComputerDiv.forEach((element, position) => {
-            element.id = position;
-        })
+            const computerDivEl = element;
+            computerDivEl.id = position;
+        });
         this.computerList.forEach((element, position) => {
-            element.computerNumber = position;
-        })
+            const computer = element;
+            computer.computerNumber = position;
+        });
     },
 
-}
+    pcAvailability() {
+        let isAvailable = this.computerList.map(computer => {
+            if (computer.isAvailable === false) {
+                return computer;
+            }
+        });
+        console.log(isAvailable);
+    }
+
+};
 
 
 const handlers = {
     addComputer() {
-        let addComputerModal = document.getElementById('addComputerModal');
         computerAddToGridToDom.addComputer();
     },
 
     removeComputer() {
 
     }
-}
+};
 
 const computerAddToGridToDom = {
     addComputer() {
         computerAddToGrid.addComputer();
-        computerAddToGrid.autoIdToElements();
 
-        let pcGrid = document.getElementById('pcGrid');
+        const pcGrid = document.getElementById('pcGrid');
 
-        let createComputerDiv = document.createElement('div');
-        let createComputerIcon = document.createElement('i');
-        let createCloseIcon = document.createElement('i');
-        let createisAvailableIcon = document.createElement('i');
+        const createComputerDiv = document.createElement('div');
+        const createComputerIcon = document.createElement('i');
+        const createCloseIcon = document.createElement('i');
+        const createisAvailableIcon = document.createElement('i');
 
-        let computerIconText = document.createTextNode('desktop_windows');
-        let createCloseIconText = document.createTextNode('close');
-        let isAvailableIconText = document.createTextNode('brightness_1');
+        const computerIconText = document.createTextNode('desktop_windows');
+        const createCloseIconText = document.createTextNode('close');
+        const isAvailableIconText = document.createTextNode('brightness_1');
 
         createComputerDiv.className += ' col s4 m2 l2 createComputerDiv';
-        createComputerIcon.className += ' large material-icons addComputerGrid';
+        createComputerIcon.className += ' large material-icons addComputerGrid modal-trigger';
+        createComputerIcon.setAttribute('data-target', 'addTimeModal');
         createCloseIcon.className += ' tiny material-icons closeComputerGrid';
         createisAvailableIcon.className += 'tiny material-icons isAvailableGrid';
 
@@ -83,35 +96,55 @@ const computerAddToGridToDom = {
         createComputerDiv.appendChild(createCloseIcon);
         createComputerDiv.appendChild(createisAvailableIcon);
         pcGrid.appendChild(createComputerDiv);
-
+        computerAddToGrid.autoIdToElements();
+        computerAddToGrid.pcAvailability();
     },
 
     computerGridEventListeners() {
         const pcGrid = document.getElementById('pcGrid');
-        pcGrid.addEventListener('click', function(e) {
+        pcGrid.addEventListener('click', e => {
             if (e.target.closest('.closeComputerGrid')) {
                 computerAddToGrid.autoIdToElements();
-                let createComputerDiv = e.target.parentNode;
-                let pcGrid = document.getElementById('pcGrid');
+                const createComputerDiv = e.target.parentNode;
                 computerAddToGrid.removeComputer(createComputerDiv.id);
                 pcGrid.removeChild(createComputerDiv);
             }
         }, false);
-    }
+    },
 
-}
+    addUserToPcEventListener() {
+        let pcID = 0;
+
+        document.addEventListener('click', e => {
+            if (e.target.closest('.addComputerGrid')) {
+                pcID = e.target.parentNode.id;
+                console.log(pcID);
+            }
+            if (e.target.closest('.addUserToPc')) {
+                const getParent = e.target.parentNode.parentNode;
+                const getParentId = getParent.getAttribute('id');
+                console.log(getParentId);
+
+                userAccounts.addUserToPc(getParentId, pcID);
+                console.log(computerAddToGrid.computerList);
+                console.log(userAccounts.userAccountList);
+            }
+        });
+    },
+
+};
 
 //Class of Users
 class User {
 
-    constructor(name, surname, username, password, email, amountOfDeposit) {
+    constructor(name, surname, username, password, email, amountOfDeposit, timeLeftOnAccount) {
         this.name = name;
         this.surname = surname;
         this.username = username;
         this.password = password;
         this.email = email;
         this.amountOfDeposit = amountOfDeposit;
-        this.timeLeftOnAccount = null;
+        this.timeLeftOnAccount = timeLeftOnAccount;
     }
 
 }
@@ -121,79 +154,100 @@ const userAccounts = {
 
     userAccountList: [],
 
-    addUserAccount(name, surname, username, password, email, amountOfDeposit) {
+    addUserAccount(name, surname, username, password, email, amountOfDeposit, timeLeftOnAccount) {
         if (!(name && surname && username && password && email && amountOfDeposit)) {
             return;
-        } else {
-            this.userAccountList.push(new User(name, surname, username, password, email, amountOfDeposit));
         }
+        this.userAccountList.push(new User(name, surname, username, password, email, amountOfDeposit, timeLeftOnAccount));
     },
-}
+
+    addUserToPc(userPos, pcPos) {
+        const getUser = userAccounts.userAccountList[userPos].username;
+        computerAddToGrid.computerList[pcPos].isAvailable = false;
+        computerAddToGrid.computerList[pcPos].usernameInUse = getUser;
+    },
+};
+
 
 const userHandlers = {
 
     addUserAccount() {
-        userAccountsFromDom.addUserAccount();
-        userAccountsFromDom.clearUserForm();
-
+        getUserAccountsFromDom.addUserAccount();
+        getUserAccountsFromDom.clearUserForm();
     }
-}
+};
 
-const userAccountsFromDom = {
+
+const getUserAccountsFromDom = {
     addUserAccount() {
-        let name = document.getElementById('first_name').value;
-        let surname = document.getElementById('last_name').value;
-        let username = document.getElementById('username').value;
-        let password = document.getElementById('password').value;
-        let email = document.getElementById('email').value;
+        const name = document.getElementById('first_name').value;
+        const surname = document.getElementById('last_name').value;
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const email = document.getElementById('email').value;
+        let timeLeftOnAccount = 0;
+        const depositAmount = document.getElementById('depositAmount');
+        const amountPicked = parseInt(depositAmount.options[depositAmount.selectedIndex].value);
 
-        let depositAmount = document.getElementById('depositAmount');
-        let amountPicked = parseInt(depositAmount.options[depositAmount.selectedIndex].value);
+        if (amountPicked === 5) {
+            timeLeftOnAccount = 3;
+        } else if (amountPicked === 10) {
+            timeLeftOnAccount = 7;
+        } else {
+            timeLeftOnAccount = 12;
+        }
 
-        userAccounts.addUserAccount(name, surname, username, password, email, amountPicked);
+        userAccounts.addUserAccount(name, surname, username, password, email, amountPicked, timeLeftOnAccount);
+        listUsersModalToDom.listUsers();
     },
 
     clearUserForm() {
-        let username = document.getElementById('username');
-        let name = document.getElementById('first_name');
-        let surname = document.getElementById('last_name');
-        let password = document.getElementById('password');
-        let email = document.getElementById('email');
+        const username = document.getElementById('username');
+        const name = document.getElementById('first_name');
+        const surname = document.getElementById('last_name');
+        const password = document.getElementById('password');
+        const email = document.getElementById('email');
 
         username.value = '';
         name.value = '';
         surname.value = '';
         password.value = '';
         email.value = '';
-
     }
-}
+};
 
 // Timer Add Time to Users
-const addTime = {
-    listUsernames: [],
 
-    getAllUsernames() {
-        userAccounts.userAccountList.forEach(username => this.listUsernames.push(username));
-    }
-}
-
-const listUsersToDom = {
+const listUsersModalToDom = {
     listUsers() {
-        let addTimeModal = document.getElementById('addTimeModal');
+        const addTimeModal = document.getElementById('addTimeModalMain');
+        const userListUl = addTimeModal.querySelector('ul');
 
-        addTime.listUsernames.forEach((user) => {
-            console.log(user.name);
-        })
-    }
-}
+        userListUl.innerHTML = '';
 
-userAccounts.addUserAccount('andreas1', 'evagorou2', 'clickys3', 105, 'dsadasasds', 3);
-userAccounts.addUserAccount('andreas', 'evagorou', 'clickys', 10, 'dsadas', 3);
-addTime.getAllUsernames();
-listUsersToDom.listUsers();
-console.log(addTime.listUsernames);
+        userAccounts.userAccountList.forEach((user, pos) => {
+                const liForUser = document.createElement('li');
+                liForUser.id = pos;
+                const addTimeButton = document.createElement('a');
+                const addTimeIcon = document.createElement('i');
+                const liUserTextContent = document.createTextNode(`Username: ${user.username} Time: ${user.timeLeftOnAccount} hours`);
 
-//AddEventListeners
+                addTimeButton.className = ' btn-floating btn-tiny red addTimeButtonModal';
+                addTimeIcon.className = ' tiny material-icons addUserToPc';
+                addTimeIcon.textContent = 'add';
+
+                addTimeButton.appendChild(addTimeIcon);
+                liForUser.appendChild(liUserTextContent);
+                liForUser.appendChild(addTimeButton);
+                userListUl.appendChild(liForUser);
+                addTimeModal.appendChild(userListUl);
+        });
+    },
+};
 
 computerAddToGridToDom.computerGridEventListeners();
+computerAddToGridToDom.addUserToPcEventListener();
+
+
+userAccounts.addUserAccount('andreas', 'makis', 'kopstakis', 'password', 'email', 5, 3);
+userAccounts.addUserAccount('andreas1', 'makis2', 'kopstakis3', 'password4', 'email', 5, 3);
