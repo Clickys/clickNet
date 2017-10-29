@@ -251,3 +251,5 @@ computerAddToGridToDom.addUserToPcEventListener();
 
 userAccounts.addUserAccount('andreas', 'makis', 'kopstakis', 'password', 'email', 5, 3);
 userAccounts.addUserAccount('andreas1', 'makis2', 'kopstakis3', 'password4', 'email', 5, 3);
+
+console.log(userAccounts.userAccountList);
