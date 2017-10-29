@@ -10,11 +10,6 @@
 //
 
 //MODALS
-$(document).ready(() => {
-    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-    $('.modal').modal();
-    $('select').material_select();
-});
 
 
 const computerAddToGrid = {
@@ -52,7 +47,6 @@ const computerAddToGrid = {
                 return computer;
             }
         });
-        console.log(isAvailable);
     }
 
 };
@@ -118,19 +112,21 @@ const computerAddToGridToDom = {
         document.addEventListener('click', e => {
             if (e.target.closest('.addComputerGrid')) {
                 pcID = e.target.parentNode.id;
-                console.log(pcID);
+
             }
             if (e.target.closest('.addUserToPc')) {
                 const getParent = e.target.parentNode.parentNode;
                 const getParentId = getParent.getAttribute('id');
-                console.log(getParentId);
 
                 userAccounts.addUserToPc(getParentId, pcID);
-                console.log(computerAddToGrid.computerList);
-                console.log(userAccounts.userAccountList);
+
             }
         });
     },
+
+    checkPcAvailability() {
+
+    }
 
 };
 
@@ -165,6 +161,7 @@ const userAccounts = {
         const getUser = userAccounts.userAccountList[userPos].username;
         computerAddToGrid.computerList[pcPos].isAvailable = false;
         computerAddToGrid.computerList[pcPos].usernameInUse = getUser;
+        checkDomPcAvailability.checkPcAvailability();
     },
 };
 
@@ -245,11 +242,33 @@ const listUsersModalToDom = {
     },
 };
 
+const checkDomPcAvailability = {
+    checkPcAvailability() {
+        let getPcs = Array.from(document.getElementsByClassName('createComputerDiv'));
+        let isAvailable = computerAddToGrid.computerList.filter(com => {
+            return com.isAvailable === false;
+        }).map(com => {
+            return com.computerNumber;
+        });
+
+        let nameAvailable = computerAddToGrid.computerList.filter(com => {
+            return com.isAvailable === false;
+        }).map(com => {
+            return com.usernameInUse;
+        });
+
+        isAvailable.forEach((pc) => {
+            let IsAvailableElPar = getPcs[pc].lastChild;
+
+            IsAvailableElPar.style.color = 'red';
+        })
+    }
+}
+
+
 computerAddToGridToDom.computerGridEventListeners();
 computerAddToGridToDom.addUserToPcEventListener();
 
 
-userAccounts.addUserAccount('andreas', 'makis', 'kopstakis', 'password', 'email', 5, 3);
-userAccounts.addUserAccount('andreas1', 'makis2', 'kopstakis3', 'password4', 'email', 5, 3);
-
-console.log(userAccounts.userAccountList);
+// userAccounts.addUserAccount('andreas', 'makis', 'kopstakis', 'password', 'email', 5, 3);
+// userAccounts.addUserAccount('andreas1', 'makis2', 'kopstakis3', 'password4', 'email', 5, 3);

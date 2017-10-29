@@ -1,0 +1,29 @@
+{
+  "name": "clicknet",
+  "version": "1.0.0",
+  "description": "Netcafe Interface",
+  "main": "app.js",
+  "dependencies": {
+    "jsdom-quokka-plugin": "^1.0.7"
+  },
+  "devDependencies": {
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Clickys/clickNet.git"
+  },
+  "author": "clickys",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Clickys/clickNet/issues"
+  },
+  "homepage": "https://github.com/Clickys/clickNet#readme"
+}
