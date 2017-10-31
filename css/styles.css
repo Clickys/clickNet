@@ -46,5 +46,14 @@
     border: 1px solid black;
 }
 .addTimeButtonModal {
-    margin-left: 20%;    
+    margin-left: 20%;
+}
+.usernameInGrid {
+    position: absolute;
+    top: 67%;
+    left: 20%;
+    text-align: justify;
+    font-weight: 600;
+    color: white;
+
 }

@@ -245,21 +245,26 @@ const listUsersModalToDom = {
 const checkDomPcAvailability = {
     checkPcAvailability() {
         let getPcs = Array.from(document.getElementsByClassName('createComputerDiv'));
+        let clearPcs = document.getElementsByClassName('usernameInGrid');
+
+        for (let i = 0; i < clearPcs.length; i++) {
+            clearPcs[i].innerHTML = '';
+        }
+
         let isAvailable = computerAddToGrid.computerList.filter(com => {
             return com.isAvailable === false;
         }).map(com => {
-            return com.computerNumber;
-        });
-
-        let nameAvailable = computerAddToGrid.computerList.filter(com => {
-            return com.isAvailable === false;
-        }).map(com => {
-            return com.usernameInUse;
+            return {computerNumber: com.computerNumber, usernameInUse: com.usernameInUse};
         });
 
         isAvailable.forEach((pc) => {
-            let IsAvailableElPar = getPcs[pc].lastChild;
-
+            let IsAvailableElPar = getPcs[pc.computerNumber].lastChild;
+            let isAvailableEl =  getPcs[pc.computerNumber];
+            let liPar = document.createElement('p');
+            let text = document.createTextNode(pc.usernameInUse);
+            liPar.className = ' usernameInGrid';
+            liPar.appendChild(text);
+            isAvailableEl.appendChild(liPar);
             IsAvailableElPar.style.color = 'red';
         })
     }
@@ -270,5 +275,7 @@ computerAddToGridToDom.computerGridEventListeners();
 computerAddToGridToDom.addUserToPcEventListener();
 
 
-// userAccounts.addUserAccount('andreas', 'makis', 'kopstakis', 'password', 'email', 5, 3);
-// userAccounts.addUserAccount('andreas1', 'makis2', 'kopstakis3', 'password4', 'email', 5, 3);
+userAccounts.addUserAccount('andreas', 'makis', 'user1', 'password', 'email', 5, 3);
+userAccounts.addUserAccount('andreas1', 'makis2', 'user2', 'password4', 'email', 5, 3);
+userAccounts.addUserAccount('andreas1', 'makis2', 'user3', 'password4', 'email', 5, 3);
+userAccounts.addUserAccount('andreas1', 'makis2', 'user4', 'password4', 'email', 5, 3);
